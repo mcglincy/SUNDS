@@ -10,6 +10,12 @@ $(document).ready(function () {
       // image subdir and name prefix
       spinnerImagePrefix = "img/SUNDS_",
 
+      autoSpinEnabled = true,
+      userDidMouseUp,
+      autoSpinTicker,
+      autoSpinTickMillis = 50,
+      autoSpinFrameIncrement = 1;
+
       // set totalFrames to the number of spinner images
 			totalFrames = 113,
 			currentFrame = 0,
@@ -77,10 +83,13 @@ $(document).ready(function () {
 	addSpinner();
 	loadImage();
 	
-	function render () {
-		if(currentFrame !== endFrame)
-		{	
+	function render() {
+		if (currentFrame !== endFrame) {	
 			var frameEasing = endFrame < currentFrame ? Math.floor((endFrame - currentFrame) * 0.1) : Math.ceil((endFrame - currentFrame) * 0.1);
+			if (autoSpinEnabled && userDidMouseUp && Math.abs(frameEasing) <= 1) {
+			  // frame changed is slowed down enough, so start autoSpin
+			  startAutoSpin();
+			}
 			hidePreviousFrame();
 			currentFrame += frameEasing;
 			showCurrentFrame();
@@ -90,7 +99,7 @@ $(document).ready(function () {
 		}
 	};
 	
-	function refresh () {
+	function refresh() {
 		if (ticker === 0) {
 			ticker = self.setInterval(render, Math.round(1000 / 60));
 		}
@@ -114,15 +123,36 @@ $(document).ready(function () {
 		return event.originalEvent.targetTouches ? event.originalEvent.targetTouches[0] : event;
 	};
 	
+	function autoSpinTick() {
+	  if (!dragging) {
+  	  endFrame = currentFrame + autoSpinFrameIncrement;
+	    refresh();
+	  }
+	}
+
+	function startAutoSpin() {
+    if (!autoSpinTicker) {
+	    autoSpinTicker = self.setInterval(autoSpinTick, autoSpinTickMillis);
+	  }
+  }
+
+  function stopAutoSpin() {
+    self.clearInterval(autoSpinTicker);
+    autoSpinTicker = undefined;    
+  }
+  
 	$(enclosingDivId).mousedown(function (event) {
 		event.preventDefault();
 		pointerStartPosX = getPointerEvent(event).pageX;
 		dragging = true;
+		userDidMouseUp = false;
+	  stopAutoSpin();
 	});
 	
 	$(document).mouseup(function (event){
 		event.preventDefault();
 		dragging = false;
+		userDidMouseUp = true;
 	});
 	
 	$(document).mousemove(function (event){
@@ -145,13 +175,14 @@ $(document).ready(function () {
 		event.preventDefault();
 		dragging = false;
 	});
-	
+
 	function trackPointer(event) {
 		if (ready && dragging) {
 			pointerEndPosX = getPointerEvent(event).pageX;
-			if(monitorStartTime < new Date().getTime() - monitorInt) {
+			if (monitorStartTime < new Date().getTime() - monitorInt) {
 				pointerDistance = pointerEndPosX - pointerStartPosX;
 				endFrame = currentFrame - Math.ceil((totalFrames - 1) * speedMultiplier * (pointerDistance / $(enclosingDivId).width()));
+				autoSpinFrameIncrement = (endFrame > currentFrame) ? 1 : -1;				
 				refresh();
 				monitorStartTime = new Date().getTime();
 				pointerStartPosX = getPointerEvent(event).pageX;
