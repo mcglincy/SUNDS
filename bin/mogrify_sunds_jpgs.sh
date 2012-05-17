@@ -8,6 +8,6 @@
 GEO=$1
 QUALITY=$2
 
-find . -maxdepth 0 -name "*.jpg" | xargs -0 mogrify -resize $GEO -quality $QUALITY
+find . -maxdepth 1 -name "SUNDS_*.jpg" -print0 | xargs -0 mogrify -resize $GEO -quality $QUALITY
 
 
