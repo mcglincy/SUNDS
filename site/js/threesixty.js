@@ -1,6 +1,23 @@
 $(document).ready(function () {
 
-	var ready = false,
+	var 
+	    // set div ids to match HTML
+	    enclosingDivId = "#threesixty",
+	    spinnerDivId = "#spinner",
+	    spinnerSpanId = "#spinner span",
+	    spinnerImagesDivId = "#threesixty_images",
+
+      // image subdir and name prefix
+      spinnerImagePrefix = "img/SUNDS_",
+
+      // set totalFrames to the number of spinner images
+			totalFrames = 113,
+			currentFrame = 0,
+			frames = [],
+			endFrame = 0,
+			loadedImages = 0
+      
+	    ready = false,
 			dragging = false,
 			pointerStartPosX = 0,
 			pointerEndPosX = 0,
@@ -10,14 +27,7 @@ $(document).ready(function () {
 			monitorInt = 10,
 			ticker = 0,
 			speedMultiplier = 10,
-			spinner,
-	
-      // set totalFrames to the number of SUNDS images
-			totalFrames = 113,
-			currentFrame = 0,
-			frames = [],
-			endFrame = 0,
-			loadedImages = 0;
+			spinner;
 	
 	function addSpinner () {
 		spinner = new CanvasLoader("spinner");
@@ -28,15 +38,15 @@ $(document).ready(function () {
 		spinner.setSpeed(4);
 		spinner.setColor("#333333");
 		spinner.show();
-		$("#spinner").fadeIn("slow");
+		$(spinnerDivId).fadeIn("slow");
 	};
 	
 	function loadImage() {
 		var li = document.createElement("li");
-		var imageName = "img/SUNDS_" + (loadedImages + 1) + ".jpg";
+		var imageName = spinnerImagePrefix + (loadedImages + 1) + ".jpg";
 		var image = $('<img>').attr('src', imageName).addClass("previous-image").appendTo(li);
 		frames.push(image);
-		$("#threesixty_images").append(li);
+		$(spinnerImagesDivId).append(li);
 		$(image).load(function() {
 			imageLoaded();
 		});
@@ -44,10 +54,10 @@ $(document).ready(function () {
 	
 	function imageLoaded() {
 		loadedImages++;
-		$("#spinner span").text(Math.floor(loadedImages / totalFrames * 100) + "%");
+		$(spinnerSpanId).text(Math.floor(loadedImages / totalFrames * 100) + "%");
 		if (loadedImages == totalFrames) {
 			frames[0].removeClass("previous-image").addClass("current-image");
-			$("#spinner").fadeOut("slow", function(){
+			$(spinnerDivId).fadeOut("slow", function(){
 				spinner.hide();
 				showThreesixty();
 			});
@@ -57,7 +67,7 @@ $(document).ready(function () {
 	};
 	
 	function showThreesixty () {
-		$("#threesixty_images").fadeIn("slow");
+		$(spinnerImagesDivId).fadeIn("slow");
 		ready = true;
 		//endFrame = -720;
 		endFrame = -1 * totalFrames * 4;
@@ -104,7 +114,7 @@ $(document).ready(function () {
 		return event.originalEvent.targetTouches ? event.originalEvent.targetTouches[0] : event;
 	};
 	
-	$("#threesixty").mousedown(function (event) {
+	$(enclosingDivId).mousedown(function (event) {
 		event.preventDefault();
 		pointerStartPosX = getPointerEvent(event).pageX;
 		dragging = true;
@@ -120,18 +130,18 @@ $(document).ready(function () {
 		trackPointer(event);
 	});
 	
-	$("#threesixty").live("touchstart", function (event) {
+	$(enclosingDivId).live("touchstart", function (event) {
 		event.preventDefault();
 		pointerStartPosX = getPointerEvent(event).pageX;
 		dragging = true;
 	});
 	
-	$("#threesixty").live("touchmove", function (event) {
+	$(enclosingDivId).live("touchmove", function (event) {
 		event.preventDefault();
 		trackPointer(event);
 	});
 	
-	$("#threesixty").live("touchend", function (event) {
+	$(enclosingDivId).live("touchend", function (event) {
 		event.preventDefault();
 		dragging = false;
 	});
@@ -141,8 +151,7 @@ $(document).ready(function () {
 			pointerEndPosX = getPointerEvent(event).pageX;
 			if(monitorStartTime < new Date().getTime() - monitorInt) {
 				pointerDistance = pointerEndPosX - pointerStartPosX;
-				//endFrame = currentFrame + Math.ceil((totalFrames - 1) * speedMultiplier * (pointerDistance / $("#threesixty").width()));
-				endFrame = currentFrame - Math.ceil((totalFrames - 1) * speedMultiplier * (pointerDistance / $("#threesixty").width()));
+				endFrame = currentFrame - Math.ceil((totalFrames - 1) * speedMultiplier * (pointerDistance / $(enclosingDivId).width()));
 				refresh();
 				monitorStartTime = new Date().getTime();
 				pointerStartPosX = getPointerEvent(event).pageX;
