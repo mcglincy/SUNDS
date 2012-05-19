@@ -165,20 +165,23 @@ var ThreeSixty = function() {
         trackPointer(event);
       });
       
-      $(enclosingDivId).live("touchstart", function (event) {
+      $(enclosingDivId).on("touchstart", function (event) {
         event.preventDefault();
         pointerStartPosX = getPointerEvent(event).pageX;
         dragging = true;
+        userDidMouseUp = false;
+        stopAutoSpin();
       });
-      
-      $(enclosingDivId).live("touchmove", function (event) {
-        event.preventDefault();
-        trackPointer(event);
-      });
-      
-      $(enclosingDivId).live("touchend", function (event) {
+
+      $(enclosingDivId).on("touchend", function (event) {
         event.preventDefault();
         dragging = false;
+        userDidMouseUp = true;
+      });    	
+      
+      $(enclosingDivId).on("touchmove", function (event) {
+        event.preventDefault();
+        trackPointer(event);
       });    	
 	}
 
