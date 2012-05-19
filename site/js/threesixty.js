@@ -1,11 +1,15 @@
-$(document).ready(function () {
+//
+// ThreeSixty image spinner
+//
+var ThreeSixty = function() {
 
+  // ########## private vars ##########
 	var 
-	    // set div ids to match HTML
-	    enclosingDivId = "#threesixty",
+	    enclosingDivId,
 	    spinnerDivId = "#spinner",
 	    spinnerSpanId = "#spinner span",
-	    spinnerImagesDivId = "#threesixty_images",
+	    spinnerImagesDivId = "#spinner_images",
+      divInnerHtml = '',
 
       // image subdir and name prefix
       spinnerImagePrefix = "img/SUNDS_",
@@ -14,14 +18,14 @@ $(document).ready(function () {
       userDidMouseUp,
       autoSpinTicker,
       autoSpinTickMillis = 50,
-      autoSpinFrameIncrement = 1;
+      autoSpinFrameIncrement = 1,
 
       // set totalFrames to the number of spinner images
 			totalFrames = 113,
 			currentFrame = 0,
 			frames = [],
 			endFrame = 0,
-			loadedImages = 0
+			loadedImages = 0,
       
 	    ready = false,
 			dragging = false,
@@ -34,30 +38,20 @@ $(document).ready(function () {
 			ticker = 0,
 			speedMultiplier = 10,
 			spinner;
-	
-	function addSpinner () {
-		spinner = new CanvasLoader("spinner");
-		spinner.setShape("spiral");
-		spinner.setDiameter(90);
-		spinner.setDensity(90);
-		spinner.setRange(1);
-		spinner.setSpeed(4);
-		spinner.setColor("#333333");
-		spinner.show();
-		$(spinnerDivId).fadeIn("slow");
-	};
-	
-	function loadImage() {
-		var li = document.createElement("li");
-		var imageName = spinnerImagePrefix + (loadedImages + 1) + ".jpg";
-		var image = $('<img>').attr('src', imageName).addClass("previous-image").appendTo(li);
-		frames.push(image);
-		$(spinnerImagesDivId).append(li);
-		$(image).load(function() {
-			imageLoaded();
-		});
-	};
-	
+
+	// ########## private methods ##########
+
+  function loadImage() {
+      var li = document.createElement("li");
+      var imageName = spinnerImagePrefix + (loadedImages + 1) + ".jpg";
+      var image = $('<img>').attr('src', imageName).addClass("previous-image").appendTo(li);
+      frames.push(image);
+      $(spinnerImagesDivId).append(li);
+      $(image).load(function() {
+        imageLoaded();
+      });    
+  }
+
 	function imageLoaded() {
 		loadedImages++;
 		$(spinnerSpanId).text(Math.floor(loadedImages / totalFrames * 100) + "%");
@@ -75,14 +69,10 @@ $(document).ready(function () {
 	function showThreesixty () {
 		$(spinnerImagesDivId).fadeIn("slow");
 		ready = true;
-		//endFrame = -720;
 		endFrame = -1 * totalFrames * 4;
 		refresh();
 	};
 
-	addSpinner();
-	loadImage();
-	
 	function render() {
 		if (currentFrame !== endFrame) {	
 			var frameEasing = endFrame < currentFrame ? Math.floor((endFrame - currentFrame) * 0.1) : Math.ceil((endFrame - currentFrame) * 0.1);
@@ -103,25 +93,25 @@ $(document).ready(function () {
 		if (ticker === 0) {
 			ticker = self.setInterval(render, Math.round(1000 / 60));
 		}
-	};
+	}
 	
 	function hidePreviousFrame() {
 		frames[getNormalizedCurrentFrame()].removeClass("current-image").addClass("previous-image");
-	};
+	}
 	
 	function showCurrentFrame() {
 		frames[getNormalizedCurrentFrame()].removeClass("previous-image").addClass("current-image");
-	};
+	}
 	
 	function getNormalizedCurrentFrame() {
 		var c = -Math.ceil(currentFrame % totalFrames);
 		if (c < 0) c += (totalFrames - 1);
 		return c;
-	};
+	}
 	
 	function getPointerEvent(event) {
 		return event.originalEvent.targetTouches ? event.originalEvent.targetTouches[0] : event;
-	};
+	}
 	
 	function autoSpinTick() {
 	  if (!dragging) {
@@ -141,42 +131,7 @@ $(document).ready(function () {
     autoSpinTicker = undefined;    
   }
   
-	$(enclosingDivId).mousedown(function (event) {
-		event.preventDefault();
-		pointerStartPosX = getPointerEvent(event).pageX;
-		dragging = true;
-		userDidMouseUp = false;
-	  stopAutoSpin();
-	});
-	
-	$(document).mouseup(function (event){
-		event.preventDefault();
-		dragging = false;
-		userDidMouseUp = true;
-	});
-	
-	$(document).mousemove(function (event){
-		event.preventDefault();
-		trackPointer(event);
-	});
-	
-	$(enclosingDivId).live("touchstart", function (event) {
-		event.preventDefault();
-		pointerStartPosX = getPointerEvent(event).pageX;
-		dragging = true;
-	});
-	
-	$(enclosingDivId).live("touchmove", function (event) {
-		event.preventDefault();
-		trackPointer(event);
-	});
-	
-	$(enclosingDivId).live("touchend", function (event) {
-		event.preventDefault();
-		dragging = false;
-	});
-
-	function trackPointer(event) {
+  function trackPointer(event) {
 		if (ready && dragging) {
 			pointerEndPosX = getPointerEvent(event).pageX;
 			if (monitorStartTime < new Date().getTime() - monitorInt) {
@@ -188,5 +143,67 @@ $(document).ready(function () {
 				pointerStartPosX = getPointerEvent(event).pageX;
 			}
 		}
-	};
-});
+	}
+	
+	function addTouchHandlers() {
+      $(enclosingDivId).mousedown(function (event) {
+        event.preventDefault();
+        pointerStartPosX = getPointerEvent(event).pageX;
+        dragging = true;
+        userDidMouseUp = false;
+        stopAutoSpin();
+      });
+      
+      $(document).mouseup(function (event){
+        event.preventDefault();
+        dragging = false;
+        userDidMouseUp = true;
+      });
+      
+      $(document).mousemove(function (event){
+        event.preventDefault();
+        trackPointer(event);
+      });
+      
+      $(enclosingDivId).live("touchstart", function (event) {
+        event.preventDefault();
+        pointerStartPosX = getPointerEvent(event).pageX;
+        dragging = true;
+      });
+      
+      $(enclosingDivId).live("touchmove", function (event) {
+        event.preventDefault();
+        trackPointer(event);
+      });
+      
+      $(enclosingDivId).live("touchend", function (event) {
+        event.preventDefault();
+        dragging = false;
+      });    	
+	}
+
+  // ############ public methods ###########
+  return {
+
+    addSpinnerToDivId : function addSpinnerToDivId(divId) {
+      enclosingDivId = "#" + divId;
+//      spinnerImagePrefix = imagePrefix;
+      $(enclosingDivId).html('<div id="spinner"><span>0%</span></div><ol id="spinner_images"></ol>');
+
+      spinner = new CanvasLoader("spinner");
+      spinner.setShape("spiral");
+      spinner.setDiameter(90);
+      spinner.setDensity(90);
+      spinner.setRange(1);
+      spinner.setSpeed(4);
+      spinner.setColor("#333333");
+      spinner.show();
+
+      $(spinnerDivId).fadeIn("slow");    
+      
+      addTouchHandlers();
+      loadImage();
+    },
+    
+  }; // public methods return
+} (); // end ThreeSixty

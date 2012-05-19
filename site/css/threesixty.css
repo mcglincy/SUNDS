@@ -11,9 +11,6 @@
 	margin-top:-192px;
 	z-index:1;
 }
-#threesixty_images {
-	display: none;
-}
 #threesixty img {
 	position:absolute;
 	top:0;
@@ -47,4 +44,7 @@
 	text-align:center;
 	line-height:0.6em;
 	margin-top:-0.3em;
+}
+#spinner_images {
+	display: none;
 }
