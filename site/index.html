@@ -8,35 +8,14 @@
 	  <script src="js/jquery-1.7.min.js"></script>
   	<script src="js/heartcode-canvasloader-min.js"></script>
   	<script src="js/threesixty.js"></script>
-  	<style>
-        #spinner {
-          position:absolute;
-          overflow:hidden;
-          left:50%;
-          top:50%;
-          /* set width and height to match image size */
-          width:512px;
-          height:384px;
-          /* set margin-left and margin-top to -1/2 image width and height */
-          margin-left:-256px;
-          margin-top:-192px;
-          z-index:1;
-      }
-      #spinner img {
-        position:absolute;
-        top:0;
-        width:100%;
-        height:auto;
-      }
-  	</style>
   </head>
   <body>
   	<div id="spinner">
   	</div>
   	<script type="text/javascript">
       $(document).ready(function() {
-        // add a spinner to the given div id, using the given image prefix
-        ThreeSixty.addSpinner('spinner', 'img/SUNDS_'); 
+        // add a spinner to the given div id, using the given image prefix, with the given width and height
+        ThreeSixty.addSpinner('spinner', 'img/SUNDS_', 512, 384); 
       });
   	</script>
   </body>

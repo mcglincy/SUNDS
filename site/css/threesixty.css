@@ -24,8 +24,14 @@
 .three-sixty-current-image {
 	visibility:visible;
 	width:100%;
+	position:absolute;
+  top:0;
+  height:auto;
 }
 .three-sixty-previous-image {
 	visibility:hidden;
 	width:0;
+	position:absolute;
+  top:0;
+  height:auto;
 }

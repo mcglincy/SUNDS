@@ -186,10 +186,21 @@ var ThreeSixty = function() {
   return {
 
     // add a spinner to the given div id, using the given image prefix
-    addSpinner : function addSpinner(divId, imagePrefix) {
+    addSpinner : function addSpinner(divId, imagePrefix, width, height) {
       enclosingDivId = "#" + divId;
       spinnerImagePrefix = imagePrefix;
       $(enclosingDivId).html(divInnerHtml);
+      $(enclosingDivId).css({
+        'position': 'absolute',
+        'overflow': 'hidden',
+        'left': '50%',
+        'top': '50%',
+        'z-index': '1',
+        'width': width,
+        'height': height,
+        'margin-left': -0.5 * width,
+        'margin-top': -0.5 * height,
+        });
 
       spinner = new CanvasLoader("three-sixty-spinner");
       spinner.setShape("spiral");
