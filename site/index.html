@@ -9,7 +9,7 @@
   	<script src="js/heartcode-canvasloader-min.js"></script>
   	<script src="js/threesixty.js"></script>
   	<style>
-        #threesixty {
+        #spinner {
           position:absolute;
           overflow:hidden;
           left:50%;
@@ -22,7 +22,7 @@
           margin-top:-192px;
           z-index:1;
       }
-      #threesixty img {
+      #spinner img {
         position:absolute;
         top:0;
         width:100%;
@@ -31,11 +31,12 @@
   	</style>
   </head>
   <body>
-  	<div id="threesixty">
+  	<div id="spinner">
   	</div>
   	<script type="text/javascript">
       $(document).ready(function() {
-        ThreeSixty.addSpinner('threesixty', 'img/SUNDS_'); 
+        // add a spinner to the given div id, using the given image prefix
+        ThreeSixty.addSpinner('spinner', 'img/SUNDS_'); 
       });
   	</script>
   </body>
