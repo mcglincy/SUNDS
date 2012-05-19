@@ -185,6 +185,7 @@ var ThreeSixty = function() {
   // ############ public methods ###########
   return {
 
+    // add a spinner to the given div id, using the given image prefix
     addSpinner : function addSpinner(divId, imagePrefix) {
       enclosingDivId = "#" + divId;
       spinnerImagePrefix = imagePrefix;
