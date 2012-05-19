@@ -8,6 +8,27 @@
 	  <script src="js/jquery-1.7.min.js"></script>
   	<script src="js/heartcode-canvasloader-min.js"></script>
   	<script src="js/threesixty.js"></script>
+  	<style>
+        #threesixty {
+          position:absolute;
+          overflow:hidden;
+          left:50%;
+          top:50%;
+          /* set width and height to match image size */
+          width:512px;
+          height:384px;
+          /* set margin-left and margin-top to -1/2 image width and height */
+          margin-left:-256px;
+          margin-top:-192px;
+          z-index:1;
+      }
+      #threesixty img {
+        position:absolute;
+        top:0;
+        width:100%;
+        height:auto;
+      }
+  	</style>
   </head>
   <body>
   	<div id="threesixty">

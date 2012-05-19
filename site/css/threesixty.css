@@ -1,31 +1,4 @@
-#threesixty {
-	position:absolute;
-	overflow:hidden;
-	left:50%;
-	top:50%;
-	/* set width and height to match image size */
-	width:512px;
-	height:384px;
-	/* set margin-left and margin-top to -1/2 image width and height */
-	margin-left:-256px;
-	margin-top:-192px;
-	z-index:1;
-}
-#threesixty img {
-	position:absolute;
-	top:0;
-	width:100%;
-	height:auto;
-}
-.current-image {
-	visibility:visible;
-	width:100%;
-}
-.previous-image {
-	visibility:hidden;
-	width:0;
-}
-#spinner {
+#three-sixty-spinner {
 	position:absolute;
 	left:50%;
 	top:50%;
@@ -35,7 +8,7 @@
 	margin-top:-50px;
 	display:none;
 }
-#spinner span {
+#three-sixty-spinner span {
 	position:absolute;
 	top:50%;
 	width:100%;
@@ -45,6 +18,14 @@
 	line-height:0.6em;
 	margin-top:-0.3em;
 }
-#spinner_images {
+#three-sixty-spinner-images {
 	display: none;
+}
+.three-sixty-current-image {
+	visibility:visible;
+	width:100%;
+}
+.three-sixty-previous-image {
+	visibility:hidden;
+	width:0;
 }

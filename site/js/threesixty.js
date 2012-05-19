@@ -6,10 +6,10 @@ var ThreeSixty = function() {
   // ########## private vars ##########
 	var 
 	    enclosingDivId,
-	    spinnerDivId = "#spinner",
-	    spinnerSpanId = "#spinner span",
-	    spinnerImagesDivId = "#spinner_images",
-      divInnerHtml = '<div id="spinner"><span>0%</span></div><ol id="spinner_images"></ol>',
+	    spinnerDivId = "#three-sixty-spinner",
+	    spinnerSpanId = "#three-sixty-spinner span",
+	    spinnerImagesDivId = "#three-sixty-spinner-images",
+      divInnerHtml = '<div id="three-sixty-spinner"><span>0%</span></div><ol id="three-sixty-spinner-images"></ol>',
 
       // image subdir and name prefix
       spinnerImagePrefix,
@@ -44,7 +44,7 @@ var ThreeSixty = function() {
   function loadImage() {
       var li = document.createElement("li");
       var imageName = spinnerImagePrefix + (loadedImages + 1) + ".jpg";
-      var image = $('<img>').attr('src', imageName).addClass("previous-image").appendTo(li);
+      var image = $('<img>').attr('src', imageName).addClass("three-sixty-previous-image").appendTo(li);
       frames.push(image);
       $(spinnerImagesDivId).append(li);
       $(image).load(function() {
@@ -56,7 +56,7 @@ var ThreeSixty = function() {
 		loadedImages++;
 		$(spinnerSpanId).text(Math.floor(loadedImages / totalFrames * 100) + "%");
 		if (loadedImages == totalFrames) {
-			frames[0].removeClass("previous-image").addClass("current-image");
+			frames[0].removeClass("three-sixty-previous-image").addClass("three-sixty-current-image");
 			$(spinnerDivId).fadeOut("slow", function(){
 				spinner.hide();
 				showThreesixty();
@@ -96,11 +96,11 @@ var ThreeSixty = function() {
 	}
 	
 	function hidePreviousFrame() {
-		frames[getNormalizedCurrentFrame()].removeClass("current-image").addClass("previous-image");
+		frames[getNormalizedCurrentFrame()].removeClass("three-sixty-current-image").addClass("three-sixty-previous-image");
 	}
 	
 	function showCurrentFrame() {
-		frames[getNormalizedCurrentFrame()].removeClass("previous-image").addClass("current-image");
+		frames[getNormalizedCurrentFrame()].removeClass("three-sixty-previous-image").addClass("three-sixty-current-image");
 	}
 	
 	function getNormalizedCurrentFrame() {
@@ -190,7 +190,7 @@ var ThreeSixty = function() {
       spinnerImagePrefix = imagePrefix;
       $(enclosingDivId).html(divInnerHtml);
 
-      spinner = new CanvasLoader("spinner");
+      spinner = new CanvasLoader("three-sixty-spinner");
       spinner.setShape("spiral");
       spinner.setDiameter(90);
       spinner.setDensity(90);
