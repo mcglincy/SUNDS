@@ -9,10 +9,10 @@ var ThreeSixty = function() {
 	    spinnerDivId = "#spinner",
 	    spinnerSpanId = "#spinner span",
 	    spinnerImagesDivId = "#spinner_images",
-      divInnerHtml = '',
+      divInnerHtml = '<div id="spinner"><span>0%</span></div><ol id="spinner_images"></ol>',
 
       // image subdir and name prefix
-      spinnerImagePrefix = "img/SUNDS_",
+      spinnerImagePrefix,
 
       autoSpinEnabled = true,
       userDidMouseUp,
@@ -185,10 +185,10 @@ var ThreeSixty = function() {
   // ############ public methods ###########
   return {
 
-    addSpinnerToDivId : function addSpinnerToDivId(divId) {
+    addSpinner : function addSpinner(divId, imagePrefix) {
       enclosingDivId = "#" + divId;
-//      spinnerImagePrefix = imagePrefix;
-      $(enclosingDivId).html('<div id="spinner"><span>0%</span></div><ol id="spinner_images"></ol>');
+      spinnerImagePrefix = imagePrefix;
+      $(enclosingDivId).html(divInnerHtml);
 
       spinner = new CanvasLoader("spinner");
       spinner.setShape("spiral");
