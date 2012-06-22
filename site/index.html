@@ -8,6 +8,15 @@
 	  <script src="js/jquery-1.7.min.js"></script>
   	<script src="js/heartcode-canvasloader-min.js"></script>
   	<script src="js/threesixty.js"></script>
+  	<script src="js/fullscreen.js"></script>
+  	<script>
+    $(document).ready(function() {
+	    $("a.full").on('click', function() {
+		    window.fullScreenApi.requestFullScreen(document.getElementById('spinner'));
+		    return false;
+	    });	
+    });
+  	</script>
   </head>
   <body>
   	<div id="spinner">
@@ -18,5 +27,6 @@
         ThreeSixty.addSpinner('spinner', 'img/SUNDS_', 512, 384); 
       });
   	</script>
+  	<a href="" class="full">Go fullscreen</a>
   </body>
 </html>
