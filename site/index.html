@@ -12,7 +12,22 @@
   	<script>
     $(document).ready(function() {
 	    $("a.full").on('click', function() {
-		    window.fullScreenApi.requestFullScreen(document.getElementById('spinner'));
+		    // fullScreenApi wants the HTMLDivElement
+		    var fsElement = $("#spinner")[0];
+		    fsElement.addEventListener(window.fullScreenApi.fullScreenEventName, function() {
+		      if (fullScreenApi.isFullScreen()) {
+            $("#spinner").width(1024);
+            $("#spinner").height(768);
+            $("#spinner").css("margin-left", -512);
+            $("#spinner").css("margin-top", -384);
+		      } else {
+            $("#spinner").width(512);
+            $("#spinner").height(384);
+            $("#spinner").css("margin-left", -256);
+            $("#spinner").css("margin-top", -192);
+		      }
+	      }, true);
+  	    window.fullScreenApi.requestFullScreen(fsElement);
 		    return false;
 	    });	
     });
